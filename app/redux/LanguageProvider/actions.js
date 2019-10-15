@@ -4,7 +4,7 @@
  *
  */
 
-import { CHANGE_LOCALE } from './constants';
+import { CHANGE_LOCALE } from './types';
 
 export function changeLocale(languageLocale) {
   return {

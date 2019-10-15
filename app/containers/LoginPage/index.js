@@ -14,8 +14,9 @@ import A from 'components/A';
 import H2 from 'components/H2';
 import StyledInput from 'components/StyledInput';
 import Button from 'components/Button';
-import { makeSelectPassword, makeSelectUsername } from './selectors';
-import { setUserInfo } from './actions';
+import { selectToken } from 'redux/user/selectors';
+import { setUserInfo } from 'redux/user/actions';
+import { withRouter } from "react-router";
 
 const ImgSection = styled.div`
   margin-top: 35px;
@@ -62,12 +63,19 @@ class LoginPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      username: props.username,
-      password: props.password,
+      username: "",
+      password: "",
     };
   }
 
+  componentWillReceiveProps(props) {
+    if (props.token) {
+     props.history.push('/') 
+    }
+  }
+
   onClick = () => {
+    const {username, password} = this.state;
     this.props.onSubmit(username, password);
   };
 
@@ -129,8 +137,7 @@ class LoginPage extends React.Component {
 }
 
 const mapStateToProps = createStructuredSelector({
-  username: makeSelectUsername(),
-  password: makeSelectPassword(),
+  token: selectToken,
 });
 
 export function mapDispatchToProps(dispatch) {
@@ -145,4 +152,4 @@ const withConnect = connect(
   mapDispatchToProps,
 );
 
-export default compose(withConnect)(LoginPage);
+export default withRouter(compose(withConnect)(LoginPage));
